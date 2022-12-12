@@ -1,71 +1,107 @@
 const {modeloProveedores} = require('../models');
 const mongoose = require('mongoose');
 
-/** 
- * Obtener una vista de todos los proveedores
+/**
+ *  Obtener una vista de todos los proveedores
  */
 
-const getProveedores = async (req, res) =>{
-    const user = req.user // TODO: NOs trae el usuario que hace un req.
-    const data = await modeloProveedores.find({})
-    res.send({data, user})
+const getProveedores = async (req, res) => {
+    try {
+        const arrayProveedoresDB = await modeloProveedores.find()
+        res.render("proveedores", {
+            arrayProveedores: arrayProveedoresDB
+        })
+    } catch (error) {
+        console.log(Error)
+    }
+};
+
+/**Registrar un proveedor
+ * 
+ */
+const postProveedor = (req, res) => {
+    res.render('crearProveedores')
 }
 
-/**
- * Registrar un proveedor
- */
-const postProveedor = async (req, res) =>{
-    const user = req.user
-    const _id = mongoose.Types.ObjectId();
-    const proveedor = modeloProveedores(req.body);
-    proveedor
-    .save()
-    .then((data)=> res.send({data, user}))
-    .catch((error=> res.json({message: error})));
+const postProvee = async (req, res ) => {
+    const body = req.body
+    try {
+        const proveedoresDB = new modeloProveedores(body)
+        await proveedoresDB.save()
+        res.redirect('/api/proveedores')
+    } catch (error) {
+        console.log('error', error)
+    }
 };
 
 /**
  * Buscar proveedor por ID
  */
-const getProveedor= async (req, res) =>{
-    const user = req.user
-    const {_id} = req.params;
-    const data = await modeloProveedores.findById(_id);
+const getProveedor = async (req, res) =>{
+    const id = req.params._id
+    try {
+        const proveedoresDB = await modeloProveedores.findOne({ _id:id })
+        res.render('detalleProveedores', {
+            proveedores: proveedoresDB,
+            error: false
+        })
+    } catch (error) {
+        res.render('detalleProveedores', {
+            mensaje:'No se ha encontrado el ID',
+            error: true
+        })
+    }
+};
 
-    res.send({data, user});
-}
-
-/**
+/** 
  * Modificar un proveedor
  */
 const putProveedor = async (req, res) => {
-    const user = req.user
-    const {_id} = req.params;
-    const {
-    nombre,
-    nacionalidad,
-    ultSuministro,
-    proxSuministro
-    } = req.body;
-    const data = await modeloProveedores.updateOne({_id: _id}, {$set: {
-        nombre,
-        nacionalidad,
-        ultSuministro,
-        proxSuministro
-    }});
-    res.send({message:'El proveedor ha sido actualizado exitosamente', user});
-}
+    const id = req.params._id
+    const body= req.body
+
+    try {
+        const proveedoresDB = await modeloProveedores.findByIdAndUpdate(
+            id, body, { useFindAndModify: false }
+        )
+
+        res.json({
+            estado: true
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.json({
+            estado: false,
+            mensaje: 'Fallo al Editar'
+        })
+    }
+};
 
 /**
  * Eliminar un proveedor
  */
-const deleteProveedor = async (req, res) =>{
-    const user = req.user
-    const {_id} = req.params;
-    const data = await modeloProveedores.deleteOne({_id: _id});
-    res.send({message:'El proveedor ha sido eliminado exitosamente', user});
+const deleteProveedor = async (req, res) => {
+    const id = req.params._id
+    try {
+        const proveedoresDB = await modeloProveedores.findByIdAndDelete({ _id:id })
+        if(proveedoresDB) {
+            res.json({
+                estado: true,
+                mensaje: 'El Proveedor ha sido Eliminado'
+            })
+        } else {
+            res.json({
+                estado: false,
+                mensaje: 'El Proveedor no se ha podido Eliminar'
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
 };
 
 //luis-san
-module.exports = {getProveedores, postProveedor, getProveedor, putProveedor, deleteProveedor};
 
+
+module.exports = {getProveedores, postProveedor, postProvee, getProveedor, putProveedor, deleteProveedor};

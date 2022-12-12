@@ -1,0 +1,50 @@
+<%- include("template/cabecera", {tituloWeb: 'Proveedores'}) %>
+
+<div class="container">
+
+  <h1 class="text-center p-3 mb-2"> Lista de Proveedores </h1>
+
+  <a
+  class="btn btn-success btn-sm my-4"
+  href="/api/proveedores/crearProveedores"
+  > 
+  Crear Nuevo Proveedor 
+</a>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Nacionalidad</th>
+            <th scope="col">Último Suministro</th>
+            <th scope="col">Próximo Suministro</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+
+            <% if (arrayProveedores.length > 0) { %>
+                <% arrayProveedores.forEach(proveedores => { %>
+                    <tr>
+                      <th scope="row"><%= proveedores._id %> </th>
+                        <td><%= proveedores.nombre %></td>
+                        <td><%= proveedores.nacionalidad %></td>
+                        <td><%= proveedores.ultSuministro %></td>
+                        <td><%= proveedores.proxSuministro %></td>
+                        <td><a 
+                          href="proveedores/<%= proveedores._id %>"
+                          class="btn btn-warning btn-sm">
+                          Editar
+                        </a>
+                      </td>
+                      </tr>
+                <% }) %>
+               <% } %>
+               
+        </tbody>
+      </table>
+
+</div>
+
+<%- include("template/footer") %>
