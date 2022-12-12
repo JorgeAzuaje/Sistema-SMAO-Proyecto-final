@@ -2,6 +2,10 @@ const express = require ('express');
 const fs = require('fs');
 const router = express.Router();
 
+router.get('/',(req,res) => {
+    res.render("Index", {Titulo: "Seleccione una colección para continuar"})
+})
+
 const PATH_ROUTES = __dirname; //Ruta absoluta de los archivos
 //FUNCIÓN PARA REMOVER EXTENSIONES =
 const removeExtension = (fileName) => {

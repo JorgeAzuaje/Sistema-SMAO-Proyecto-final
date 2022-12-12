@@ -1,0 +1,54 @@
+<%- include("template/cabecera", {tituloWeb: 'Creación de Equipo'}) %>
+
+    <div class="container">
+        <h1> Crear nuevo Equipo </h1>
+        <form action="/api/equipos" method="POST">
+            <input type="text"
+            placeholder="Agregar Nombre"
+            class="form-control my-2"
+            name="nombre"
+            >
+            <input type="text"
+            placeholder="Agregar Descripcion"
+            class="form-control my-2"
+            name="descripcion"
+            >
+            <input type="text"
+            placeholder="Agregar serial"
+            class="form-control my-2"
+            name="serial"
+            >
+            <input type="text"
+            placeholder="Agregar Fecha de Inicio"
+            class="form-control my-2"
+            name="fecha_ini"
+            >
+            <input type="text"
+            placeholder="Agregar Ultima Fecha de Puesta en Marcha"
+            class="form-control my-2"
+            name="fecha_ult"
+            >
+            <input type="text"
+            placeholder="Agregar Fecha de Mantenimiento"
+            class="form-control my-2"
+            name="fecha_man"
+            >
+            <input type="text"
+            placeholder="Agregar ID del Trabajo"
+            class="form-control my-2"
+            name="id_Trabajo"
+            >
+            <input type="text"
+            placeholder="Agregar estado"
+            class="form-control my-2"
+            name="estado"
+            >
+            <button 
+            class="btn btn-success btn-block"
+            type="submit">
+                Agregar
+            </button>
+        </form>
+    </div>
+
+<%- include("template/footer") %>

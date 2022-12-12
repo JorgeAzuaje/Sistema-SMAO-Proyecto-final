@@ -6,28 +6,40 @@ const mongoose = require('mongoose');
  * Obtener Trabajo by ID
  */
  const getTrabajo = async (req, res) =>{
-    const user = req.user
-    const {_id} = req.params;
-    const data = await modeloTrabajos.findById(_id);
-  
-    res.send({data, user});
+    const id = req.params._id
+    try {
+        const trabajosDB = await modeloTrabajos.findOne({ _id:id })
+        res.render('detalleTrabajo', {
+            trabajo: trabajosDB,
+            error: false
+        })
+    } catch (error) {
+        res.render('detalleTrabajo', {
+            mensaje:'No se ha encontrado el ID',
+            error: true
+        })
+    }
 };
 
 /**
  * Obtener lista de Trabajos disponibles
  */
-const getTrabajos = async (req, res) =>{
-    const user = req.user
-    const data = await modeloTrabajos.find({});
-    res.send({data, user});
-    
+const getTrabajos = async (req, res) => {
+    try {
+        const arrayTrabajosDB = await modeloTrabajos.find()
+        res.render("trabajos", {
+            arrayTrabajos: arrayTrabajosDB
+        })
+    } catch (error) {
+        console.log(Error)
+    }
 };
 
 /**
- * Trabajo por id de equipo
+ * Obtener Equipo por ID Único en idEquipo
  */
 
- const getEquipoTr = async (req, res) =>{
+const getEquipoTr = async (req, res) =>{
     const user = req.user
     const {idEquipo} = req.params;
     const data = await modeloTrabajos.findOne({idEquipo: idEquipo});
@@ -37,50 +49,67 @@ const getTrabajos = async (req, res) =>{
 /**
  * Crear un Trabajo nuevo
  */
-const postTrabajos = (req, res) =>{
-    const user = req.user
-    const _id = mongoose.Types.ObjectId();
-    const trabajos = modeloTrabajos(req.body);
-    trabajos
-    .save()
-    .then((data)=> res.send({data, user}))
-    .catch((error=> res.json({message: error})));
+const postTrabajos = (req, res) => {
+    res.render('crearTrabajo')
+}
+
+const postTrabajo = async (req, res ) => {
+    const body = req.body
+    try {
+        const trabajoDB = new modeloTrabajos(body)
+        await trabajoDB.save()
+        res.redirect('/api/trabajos')
+    } catch (error) {
+        console.log('error', error)
+    }
 };
 
 /**
  * Modificar un Trabajo
  */
-const putTrabajos = async (req, res) =>{
-    const user = req.user
-    const {_id} = req.params;
-    const {
-    idEquipo,
-    nombreEquipo,
-    fechaPlan,
-    fecha_ini,
-    fecha_fin,
-    obsTecnico,
-    estado
-    } = req.body;
-    const data = await modeloTrabajos.updateOne({_id: _id}, {$set: {
-        idEquipo,
-        nombreEquipo,
-        fechaPlan,
-        fecha_ini,
-        fecha_fin,
-        obsTecnico,
-        estado}});
-    res.send({data, user});
+const putTrabajos = async (req, res) => {
+    const id = req.params._id
+    const body= req.body
+
+    try {
+        const trabajoDB = await modeloTrabajos.findByIdAndUpdate(
+            id, body, { useFindAndModify: false }
+        )
+
+        res.json({
+            estado: true
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.json({
+            estado: false,
+            mensaje: 'Fallo al Editar'
+        })
+    }
 };
 
 /**
  * Eliminar un Trabajo por id
  */
-const deleteTrabajos = async (req, res) =>{
-    const user = req.user
-    const {_id} = req.params;
-    const data = await modeloTrabajos.remove({_id: _id});
-    res.send({message:'El trabajo ha sido eliminado exitosamente'}, {user});
+const deleteTrabajos = async (req, res) => {
+    const id = req.params._id
+    try {
+        const trabajosDB = await modeloTrabajos.findByIdAndDelete({ _id:id })
+        if(trabajosDB) {
+            res.json({
+                estado: true,
+                mensaje: 'El trabajo ha sido Eliminado'
+            })
+        } else {
+            res.json({
+                estado: false,
+                mensaje: 'El trabajo no se ha podido Eliminar'
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
 };
 
-module.exports = {getTrabajo, getTrabajos, postTrabajos, putTrabajos, deleteTrabajos, getEquipoTr};
+module.exports = {getTrabajo, getTrabajos, postTrabajos, postTrabajo, putTrabajos, deleteTrabajos, getEquipoTr};

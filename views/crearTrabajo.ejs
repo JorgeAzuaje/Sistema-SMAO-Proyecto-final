@@ -1,0 +1,49 @@
+<%- include("template/cabecera", {tituloWeb: 'Creación de Trabajo'}) %>
+
+    <div class="container">
+        <h1> Crear nuevo Trabajo </h1>
+        <form action="/api/trabajos" method="POST">
+            <input type="text"
+            placeholder="Agregar id del Equipo"
+            class="form-control my-2"
+            name="idEquipo"
+            >
+            <input type="text"
+            placeholder="Agregar Nombre del Equipo"
+            class="form-control my-2"
+            name="nombreEquipo"
+            >
+            <input type="text"
+            placeholder="Agregar fecha_Plan"
+            class="form-control my-2"
+            name="fecha_Plan"
+            >
+            <input type="text"
+            placeholder="Agregar fecha_ini"
+            class="form-control my-2"
+            name="fecha_ini"
+            >
+            <input type="text"
+            placeholder="Agregar fecha_fin"
+            class="form-control my-2"
+            name="fecha_fin"
+            >
+            <input type="text"
+            placeholder="Agregar obsTecnico"
+            class="form-control my-2"
+            name="obsTecnico"
+            >
+            <input type="text"
+            placeholder="Agregar estado"
+            class="form-control my-2"
+            name="estado"
+            >
+            <button
+            class="btn btn-success btn-block"
+            type="submit">
+                Agregar
+            </button>
+        </form>
+    </div>
+
+<%- include("template/footer") %>
