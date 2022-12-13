@@ -1,0 +1,39 @@
+<%- include("template/cabecera", {tituloWeb: 'Creación de Piezas'}) %>
+
+    <div class="container">
+        <h1> Crear nueva Pieza </h1>
+        <form action="/api/piezas" method="POST">
+            <input type="text"
+            placeholder="Agregar Marca"
+            class="form-control my-2"
+            name="marca"
+            >
+            <input type="text"
+            placeholder="Agregar Tipo"
+            class="form-control my-2"
+            name="tipo"
+            >
+            <input type="text"
+            placeholder="Agregar Modelo"
+            class="form-control my-2"
+            name="modelo"
+            >
+            <input type="text"
+            placeholder="Agregar Descripcion"
+            class="form-control my-2"
+            name="descripcion"
+            >
+            <input type="text"
+            placeholder="Agregar estado"
+            class="form-control my-2"
+            name="estado"
+            >
+            <button 
+            class="btn btn-success btn-block"
+            type="submit">
+                Agregar
+            </button>
+        </form>
+    </div>
+
+<%- include("template/footer") %>
