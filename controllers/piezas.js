@@ -2,9 +2,9 @@ const {registroPiezas} = require('../models');
 const { db } = require('../models/nosql/proveedores');
 const mongoose = require('mongoose');
 
-/ 
- * Obtener una vista de todas las piezas
- */
+/* 
+* Obtener una vista de todas las piezas
+*/
 
 const getPiezas =  async (req, res) => {
     try {
@@ -17,9 +17,9 @@ const getPiezas =  async (req, res) => {
     }
 };
 
-/
- * Registrar una piezas
- */
+/* 
+* Registrar una piezas
+*/
 const postPiezas = (req, res) => {
     res.render('crearPieza')
 }
@@ -35,9 +35,9 @@ const postPieza = async (req, res ) => {
     }
 };
 
-/
- * Buscar pieza por ID
- */
+/* 
+* Buscar pieza por ID
+*/
 const getPieza = async (req, res) =>{
     const id = req.params._id
     try {
@@ -54,9 +54,9 @@ const getPieza = async (req, res) =>{
     }
 };
 
-/
- * Modificar una pieza
- */
+/* 
+* Modificar una pieza
+*/
 const putPieza = async (req, res) => {
     const id = req.params._id
     const body= req.body
